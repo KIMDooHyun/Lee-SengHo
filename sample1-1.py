@@ -19,9 +19,10 @@ class GetData:
             print("결과 XML을 파싱하였습니다.")
     elif choosenumber==2:
         entpname=str(input("회사 이름을 입력합니다 : "))
+        numbrows=int(input("얼마만큼 표시할지를 입력합니다. : "))
         decode_key = unquote('Bw24TtXAIcROPn%2FcAPiatMkvhPRC6KbKXX%2BIaV%2FVN5fy3GgNB8Tj92PS6FNoHDb1GV2W2v%2FtZT4HvX9x3SmWmA%3D%3D')
         baseurl = 'http://apis.data.go.kr/1470000/MdcinGrnIdntfcInfoService/getMdcinGrnIdntfcInfoList'
-        queryParams = '?' + urlencode({ quote_plus('ServiceKey') : decode_key, quote_plus('item_name') : '', quote_plus('entp_name') : entpname, quote_plus('pageNo') : '1', quote_plus('numOfRows') : '1' })
+        queryParams = '?' + urlencode({ quote_plus('ServiceKey') : decode_key, quote_plus('item_name') : '', quote_plus('entp_name') : entpname, quote_plus('pageNo') : '1', quote_plus('numOfRows') : numbrows })
         url = baseurl+queryParams
         print(url)
         def main(self):
