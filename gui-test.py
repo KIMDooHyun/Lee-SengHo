@@ -34,7 +34,6 @@ def searching(rb):
                 CLASS_NAME = root.findtext('body/items/item/CLASS_NAME')
                 ITEM_SEQ = root.find('body/items/item/ITEM_SEQ').text
                 ENTP_NAME = root.findtext('body/items/item/ENTP_NAME')
-                app.setLabel
                 print("약물등록번호 : ", ITEM_SEQ)
                 print("약물명 :", ITEM_NAME)
                 print("제조사 :", ENTP_NAME)
