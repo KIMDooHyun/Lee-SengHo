@@ -36,7 +36,7 @@ def searching(rb):
                 root=tree.getroot()                
                 ITEM_NAME = root.findtext('body/items/item/ITEM_NAME')
                 if ITEM_NAME==None:
-                    print("이름을 다시한번 확인해 주십시오.")
+                    app.errorBox("경고","이름을 다시한번 확인해 주십시오.")
                 else:
                     CLASS_NAME = root.findtext('body/items/item/CLASS_NAME')
                     ITEM_SEQ = root.find('body/items/item/ITEM_SEQ').text
@@ -70,7 +70,7 @@ def searching(rb):
                 root=tree.getroot()
                 PRMS_DT = root.findtext('body/items/item/PRMS_DT')
                 if PRMS_DT==None:
-                    print("이름을 다시한번 확인해 주십시오.")
+                    app.errorBox("경고","이름을 다시한번 확인해 주십시오.")
                 else:
                     PRDLST_NM = root.find('body/items/item/PRDLST_NM').text
                     BSSH_NM = root.findtext('body/items/item/BSSH_NM')
@@ -89,9 +89,10 @@ def searching(rb):
             app.errorBox("경고", "검색창에 약물 이름을 입력해주세요.")
         else:
             illicit_drugs=app.getEntry("searching_option_item")
+            itemname_encText = quote(illicit_drugs)
             decode_key = unquote('94G9o%2FpVMOcY%2F65ihjY%2FbXHetzaOK0ESh4bHnwaZPOrWDw0H5sGloaLcMRG2KRs70iLxGdPRDuZBNvLc%2BsG3fQ%3D%3D')
             baseurl = 'http://apis.data.go.kr/1470000/MdcinSdefctInfoService/getMdcinSdefctInfoList'
-            queryParams = '?' + urlencode({ quote_plus('ServiceKey') : decode_key, quote_plus('col_001') : illicit_drugs, quote_plus('col_002') : '', quote_plus('pageNo') : '1', quote_plus('numOfRows') : '3' })
+            queryParams = '?' + urlencode({ quote_plus('ServiceKey') : decode_key, quote_plus('col_001') : itemname_encText, quote_plus('col_002') : '', quote_plus('pageNo') : '1', quote_plus('numOfRows') : '3' })
             url = baseurl + queryParams
             print(url)
             def main():
@@ -101,12 +102,21 @@ def searching(rb):
                 f.close()
                 tree = ET.parse('MdcinSdefct-db.xml')
                 root = tree.getroot()
+                items = root.findall('body/items/item')
                 ITEM_NAME = root.findtext('body/items/item/COL_001')
-                period_NAME = root.findtext('body/items/item/COL_004')
-                information = root.findtext('body/items/item/COL_005')
-                print('약품명 : ', ITEM_NAME)
-                print('판매 기간 : ', period_NAME)
-                print('증상 : ', information)
+                if ITEM_NAME==None:
+                    app.errorBox("경고","이름을 다시한번 확인해 주십시오.")
+                else:
+                    period_NAME = root.findtext('body/items/item/COL_004')
+                    app.setLabel("이름-1", "약품명 : ")
+                    app.setLabel("이름-2", ITEM_NAME)
+                    app.setLabel("제조사/증상-1", "약물 허용 기간 : ")
+                    app.setLabel("제조사/증상-2", period_NAME)
+                    app.setLabel("용도/복용방법-1", "부작용 : ")
+                    information = tree.findall('.//body/items/item/COL_005')
+                    inflist = [t.text for t in information]
+                    print(inflist)
+                    app.setLabel("용도/복용방법-2", inflist)
             main()
 def imagedownload(rb):
     if app.getEntry("searching_option_item")=='':
@@ -128,7 +138,7 @@ def imagedownload(rb):
                 root=tree.getroot()                
                 ImageUrl = root.findtext('body/items/item/ITEM_IMAGE')
                 if ImageUrl==None:
-                    print("이름을 다시한번 확인해 주십시오.")
+                    app.errorBox("경고","이름을 다시한번 확인해 주십시오.")
                 else:
                     print(ImageUrl)
                     webbrowser.open_new(ImageUrl)
