@@ -117,6 +117,12 @@ def searching(rb):
                     inflist = [t.text for t in information]
                     print(inflist)
                     app.setLabel("용도/복용방법-2", inflist)
+
+                wiki_url = 'https://ko.wikipedia.org/wiki/' + itemname_encText
+                new = 2 # open in a new tab, if possible
+                webbrowser.open(wiki_url,new=new)
+
+                    
             main()
 def imagedownload(rb):
     if app.getEntry("searching_option_item")=='':
