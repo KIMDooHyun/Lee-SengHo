@@ -115,15 +115,20 @@ def searching(rb):
                     app.setLabel("용도/복용방법-1", "부작용 : ")
                     information = tree.findall('.//body/items/item/COL_005')
                     inflist = [t.text for t in information]
-                    print(inflist)
                     app.setLabel("용도/복용방법-2", inflist)
-
-                wiki_url = 'https://ko.wikipedia.org/wiki/' + itemname_encText
-                new = 2 # open in a new tab, if possible
-                webbrowser.open(wiki_url,new=new)
-
-                    
             main()
+def openwiki(rb):
+    if app.getRadioButton("drug")=="부작용보고 약물검색":
+        if app.getEntry("searching_option_item")=='':
+            app.errorBox("경고", "검색창에 약물 이름을 입력해주세요.")
+        else:
+            illicit_drugs=app.getEntry("searching_option_item")
+            itemname_encText = quote(illicit_drugs)
+            wiki_url = 'https://ko.wikipedia.org/wiki/' + itemname_encText
+            new = 2 # open in a new tab, if possible
+            webbrowser.open(wiki_url,new=new)
+    else:
+        app.errorBox("경고","부작용이 보고된 약물만 검색해주세요.")
 def imagedownload(rb):
     if app.getEntry("searching_option_item")=='':
         app.errorBox("경고", "검색창에 약물을 입력해주세요.")
@@ -151,6 +156,7 @@ def imagedownload(rb):
             main()
         else:
             app.errorBox("경고", "약품 이름 검색으로만 가능한 서비스입니다.")
+#이후 구현할 기능 : 검색 후 바로 메일 전송
 app.addEntry("searching_option_item",0,0)
 app.addButton("검색",searching,0,1)
 app.setEntryDefault("searching_option_item", "　")
@@ -168,4 +174,5 @@ app.addLabel("제조사/증상-2", "　",10,1)
 app.addLabel("용도/복용방법-1", "　",11,0)
 app.addLabel("용도/복용방법-2", "　",11,1)
 app.addButton("약품 이미지 다운로드",imagedownload,12,0)
+app.addButton("금지약물 위키피디아",openwiki,12,1)
 app.go()
