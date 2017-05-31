@@ -108,6 +108,8 @@ def searching(rb):
                     app.errorBox("경고","이름을 다시한번 확인해 주십시오.")
                 else:
                     period_NAME = root.findtext('body/items/item/COL_004')
+                    app.setLabel("등록번호-1", "")
+                    app.setLabel("등록번호-2", '')
                     app.setLabel("이름-1", "약품명 : ")
                     app.setLabel("이름-2", ITEM_NAME)
                     app.setLabel("제조사/증상-1", "약물 허용 기간 : ")
@@ -156,6 +158,8 @@ def imagedownload(rb):
             main()
         else:
             app.errorBox("경고", "약품 이름 검색으로만 가능한 서비스입니다.")
+def sendemail(rb):
+    print("이메일전송부분")
 #이후 구현할 기능 : 검색 후 바로 메일 전송
 app.addEntry("searching_option_item",0,0)
 app.addButton("검색",searching,0,1)
@@ -173,6 +177,7 @@ app.addLabel("제조사/증상-1", "　",10,0)
 app.addLabel("제조사/증상-2", "　",10,1)
 app.addLabel("용도/복용방법-1", "　",11,0)
 app.addLabel("용도/복용방법-2", "　",11,1)
-app.addButton("약품 이미지 다운로드",imagedownload,12,0)
-app.addButton("금지약물 위키피디아",openwiki,12,1)
+app.addButton("약품 이미지 다운로드",imagedownload,12)
+app.addButton("금지약물 위키피디아",openwiki,13)
+app.addButton("이메일전송",sendemail,14)
 app.go()
