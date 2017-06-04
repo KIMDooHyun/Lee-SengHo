@@ -10,6 +10,7 @@ from appJar import gui
 
 app=gui()
 app.setGeometry("580x260")                                  # 프로그램 크기 설정
+
 def setting(rb):                                            # 설정버튼 함수
     if app.getRadioButton("drug")=='약품 이름검색':
         app.setLabel("f2", "약품 이름을 검색합니다.")
@@ -39,14 +40,18 @@ def searching(rb):                                          # 검색 버튼 함�
                 global ImageUrl
                 data=urlopen(url).read() 
                 #print(data)
-                f=open("drug-db-itemname.xml","wb")                     # 의약물 XML파일을 열기
+                f=open("drug-db-itemname.xml","wb")                     # 의약물 XML파일 열기
                 f.write(data)
                 f.close()
                 tree = ET.parse('drug-db-itemname.xml')
-                root=tree.getroot()                
+                root=tree.getroot()
                 ITEM_NAME = root.findtext('body/items/item/ITEM_NAME')
+
+                # 의약품의 데이터가 잘못된경우, 경고문구 출력.
                 if ITEM_NAME==None:
                     app.errorBox("경고","이름을 다시한번 확인해 주십시오.")
+
+                # 의약품 내용을출력.
                 else:
                     CLASS_NAME = root.findtext('body/items/item/CLASS_NAME')
                     ITEM_SEQ = root.find('body/items/item/ITEM_SEQ').text
@@ -78,14 +83,18 @@ def searching(rb):                                          # 검색 버튼 함�
                 global NTK_MTHD
                 data=urlopen(url).read()
                 #print(data)
-                f=open("htfs-db-itemname.xml","wb")
+                f=open("htfs-db-itemname.xml","wb")                     # 건강식품 XML파일 열기
                 f.write(data)
                 f.close()
                 tree = ET.parse('htfs-db-itemname.xml')
                 root=tree.getroot()
                 PRMS_DT = root.findtext('body/items/item/PRMS_DT')
+
+                # 검색한 데이터가 잘못되었을 경우. 경고문구 출력.
                 if PRMS_DT==None:
                     app.errorBox("경고","이름을 다시한번 확인해 주십시오.")
+
+                # 건강식품 내용을 출력.
                 else:
                     PRDLST_NM = root.find('body/items/item/PRDLST_NM').text
                     BSSH_NM = root.findtext('body/items/item/BSSH_NM')
@@ -122,8 +131,12 @@ def searching(rb):                                          # 검색 버튼 함�
                 root = tree.getroot()
                 items = root.findall('body/items/item')
                 ITEM_NAME = root.findtext('body/items/item/COL_001')
+                
+                # 불법약품의 데이터 입력이 잘못된경우. 경고문구 출력.
                 if ITEM_NAME==None:
                     app.errorBox("경고","이름을 다시한번 확인해 주십시오.")
+
+                # 불법약품을 맞게 검색한 경우.  내용을 출력
                 else:
                     period_NAME = root.findtext('body/items/item/COL_004')
                     app.setLabel("등록번호-1", '')
@@ -168,18 +181,23 @@ def imagedownload(rb):      # 의약품 이미지를 다운받기 위한 버튼�
                 webbrowser.open_new(ImageUrl)
         else:
             app.errorBox("경고", "약품 이름 검색으로만 가능한 서비스입니다.")
-def sendemailbutton(rb):
+def sendemailbutton(rb):                        # 검색한 정보를 메일로 보내기 위한 버튼함수.
     if app.getRadioButton("drug")=='약품 이름검색':
         if app.getLabel("이름-1")=='':
             app.errorBox("경고","먼저 검색을 하셔야합니다.")
         else:
-            senderAddr = "drugdbkpu@gmail.com"
-            recipientAddr=app.textBox("email 주소 입력", "이메일 주소를 입력해주세요.")
-            if recipientAddr==None:
+            senderAddr = "drugdbkpu@gmail.com"              
+            recipientAddr=app.textBox("email 주소 입력", "이메일 주소를 입력해주세요.") # 보내고자 하는 이메일 주소 적음.
+            if recipientAddr==None:                             # 취소버튼을 눌렀을시 취소처리. 
                 app.infoBox("취소", "전송이 취소되었습니다.")
-            else:
+
+            else:                                               # 전송버튼을 눌렀을시 전송.
+
+                # 메일을 보내기 위해 host,port번호 설정.
                 host = "smtp.gmail.com"
                 port = "587"
+                
+                # 약물을 선택하여 검색하여 메일을 통해 보낼려 할때의 내용.   
                 text = "약물 등록번호 : %s \n약물명 : %s \n제조사 : %s \n용도 : %s \n이미지 링크 : %s" %(ITEM_SEQ, ITEM_NAME, ENTP_NAME, CLASS_NAME, ImageUrl)
                 msg = MIMEText(text)
                 msg['To'] = senderAddr
@@ -189,10 +207,12 @@ def sendemailbutton(rb):
                 s.ehlo()
                 s.starttls()
                 s.ehlo()
-                s.login("drugdbkpu@gmail.com","20152100511!")
+                s.login("gift8290@gmail.com","azxs2314")
                 s.sendmail(senderAddr , [recipientAddr], msg.as_string())
                 app.infoBox("전송","전송되었습니다.")
                 s.close()
+
+        
     if app.getRadioButton("drug")=='건강 식품검색':
         if app.getLabel("이름-1")=='':
             app.errorBox("경고","먼저 검색을 하셔야합니다.")
@@ -202,6 +222,7 @@ def sendemailbutton(rb):
             if recipientAddr==None:
                 app.infoBox("취소", "전송이 취소되었습니다.")
             else:
+                # 건강식품을 선택하여 검색한 후 메일로 보내고자 할때 내용.
                 host = "smtp.gmail.com"
                 port = "587"
                 text = "식품 등록번호 : %s \n식품명 : %s \n제조사 : %s \n복용 방법 : %s" %(PRMS_DT, PRDLST_NM, BSSH_NM, NTK_MTHD)
@@ -213,9 +234,11 @@ def sendemailbutton(rb):
                 s.ehlo()
                 s.starttls()
                 s.ehlo()
-                s.login("drugdbkpu@gmail.com","20152100511!")
+                s.login("gift8290@gmail.com","azxs2314")
                 s.sendmail(senderAddr , [recipientAddr], msg.as_string())
                 app.infoBox("전송","전송되었습니다.")
+
+        # 불법약품을 선택하여 검색한 후 메일로 보내려고 할때 내용.  
     if app.getRadioButton("drug")=='부작용보고 약물검색':
         if app.getLabel("이름-1")=='':
             app.errorBox("경고","먼저 검색을 하셔야합니다.")
@@ -224,7 +247,9 @@ def sendemailbutton(rb):
             recipientAddr=app.textBox("email 주소 입력", "이메일 주소를 입력해주세요.")
             if recipientAddr==None:
                 app.infoBox("취소", "전송이 취소되었습니다.")
+
             else:
+                # 불법약품을 선택하여 검색한 후 메일로 보내려고 할때 내용.  
                 host = "smtp.gmail.com"
                 port = "587"
                 text = "약물명 : %s \n약물 허용 기간 : %s \n증상 : %s" %(ITEM_NAME, period_NAME, inflist)
@@ -236,7 +261,7 @@ def sendemailbutton(rb):
                 s.ehlo()
                 s.starttls()
                 s.ehlo()
-                s.login("drugdbkpu@gmail.com","20152100511!")
+                s.login("gift8290@gmail.com","azxs2314")
                 s.sendmail(senderAddr , [recipientAddr], msg.as_string())
                 app.infoBox("전송","전송되었습니다.")
 
