@@ -9,6 +9,7 @@ import mysmtplib
 from appJar import gui
 
 app=gui()
+app.setGeometry("580x260")
 def setting(rb):
     if app.getRadioButton("drug")=='약품 이름검색':
         app.setLabel("f2", "약품 이름을 검색합니다.")
