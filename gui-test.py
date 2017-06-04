@@ -9,8 +9,8 @@ import mysmtplib
 from appJar import gui
 
 app=gui()
-app.setGeometry("580x260")
-def setting(rb):
+app.setGeometry("580x260")                                  # 프로그램 크기 설정
+def setting(rb):                                            # 설정버튼 함수
     if app.getRadioButton("drug")=='약품 이름검색':
         app.setLabel("f2", "약품 이름을 검색합니다.")
         app.updateEntryDefault("searching_option_item", "알약형 약품 이름을 입력하십시오.")
@@ -20,14 +20,14 @@ def setting(rb):
     elif app.getRadioButton("drug")=="부작용보고 약물검색":
         app.setLabel("f2", "부작용보고 약물을 검색합니다.")
         app.updateEntryDefault("searching_option_item", "부작용보고 약물을 입력하십시오.")
-def searching(rb):
+def searching(rb):                                          # 검색 버튼 함수 
     if app.getRadioButton("drug")=='약품 이름검색':
         itemname=app.getEntry("searching_option_item")
         if app.getEntry("searching_option_item")=='':
             app.errorBox("경고", "검색창에 약물을 입력해주세요.")
         else:
-            decode_key = unquote('Bw24TtXAIcROPn%2FcAPiatMkvhPRC6KbKXX%2BIaV%2FVN5fy3GgNB8Tj92PS6FNoHDb1GV2W2v%2FtZT4HvX9x3SmWmA%3D%3D')
-            baseurl = 'http://apis.data.go.kr/1470000/MdcinGrnIdntfcInfoService/getMdcinGrnIdntfcInfoList'
+            decode_key = unquote('Bw24TtXAIcROPn%2FcAPiatMkvhPRC6KbKXX%2BIaV%2FVN5fy3GgNB8Tj92PS6FNoHDb1GV2W2v%2FtZT4HvX9x3SmWmA%3D%3D') # 의약물 API 인증키
+            baseurl = 'http://apis.data.go.kr/1470000/MdcinGrnIdntfcInfoService/getMdcinGrnIdntfcInfoList'                                
             queryParams = '?' + urlencode({ quote_plus('ServiceKey') : decode_key, quote_plus('item_name') : itemname, quote_plus('entp_name') : '', quote_plus('pageNo') : '1', quote_plus('numOfRows') : '1' })
             url = baseurl+queryParams
             print(url)
@@ -39,7 +39,7 @@ def searching(rb):
                 global ImageUrl
                 data=urlopen(url).read() 
                 #print(data)
-                f=open("drug-db-itemname.xml","wb")
+                f=open("drug-db-itemname.xml","wb")                     # 의약물 XML파일을 열기
                 f.write(data)
                 f.close()
                 tree = ET.parse('drug-db-itemname.xml')
@@ -66,7 +66,7 @@ def searching(rb):
             app.errorBox("경고", "검색창에 식품 이름을 입력해주세요.")
         else:
             itemname=app.getEntry("searching_option_item")
-            decode_key = unquote('Bw24TtXAIcROPn%2FcAPiatMkvhPRC6KbKXX%2BIaV%2FVN5fy3GgNB8Tj92PS6FNoHDb1GV2W2v%2FtZT4HvX9x3SmWmA%3D%3D')
+            decode_key = unquote('Bw24TtXAIcROPn%2FcAPiatMkvhPRC6KbKXX%2BIaV%2FVN5fy3GgNB8Tj92PS6FNoHDb1GV2W2v%2FtZT4HvX9x3SmWmA%3D%3D')        # 건강식품 API인중키
             baseurl = 'http://apis.data.go.kr/1470000/HtfsTrgetInfoService/getHtfsInfoList'
             queryParams = '?' + urlencode({ quote_plus('ServiceKey') : decode_key, quote_plus('prdlst_nm') : itemname, quote_plus('bssh_nm') : '', quote_plus('pageNo') : '1', quote_plus('numOfRows') : '1' })
             url = baseurl+queryParams
@@ -105,7 +105,7 @@ def searching(rb):
         else:
             illicit_drugs=app.getEntry("searching_option_item")
             itemname_encText = quote(illicit_drugs)
-            decode_key = unquote('94G9o%2FpVMOcY%2F65ihjY%2FbXHetzaOK0ESh4bHnwaZPOrWDw0H5sGloaLcMRG2KRs70iLxGdPRDuZBNvLc%2BsG3fQ%3D%3D')
+            decode_key = unquote('94G9o%2FpVMOcY%2F65ihjY%2FbXHetzaOK0ESh4bHnwaZPOrWDw0H5sGloaLcMRG2KRs70iLxGdPRDuZBNvLc%2BsG3fQ%3D%3D')    # 불법약품 API인증키
             baseurl = 'http://apis.data.go.kr/1470000/MdcinSdefctInfoService/getMdcinSdefctInfoList'
             queryParams = '?' + urlencode({ quote_plus('ServiceKey') : decode_key, quote_plus('col_001') : itemname_encText, quote_plus('col_002') : '', quote_plus('pageNo') : '1', quote_plus('numOfRows') : '3' })
             url = baseurl + queryParams
@@ -115,7 +115,7 @@ def searching(rb):
                 global period_NAME
                 global inflist
                 data = urlopen(url).read()
-                f = open('MdcinSdefct-db.xml','wb')
+                f = open('MdcinSdefct-db.xml','wb')                         # 불법약품 XML파일 열기
                 f.write(data)
                 f.close()
                 tree = ET.parse('MdcinSdefct-db.xml')
@@ -137,7 +137,12 @@ def searching(rb):
                     inflist = [t.text for t in information]
                     app.setLabel("용도/복용방법-2", inflist)
             main()
-def openwiki(rb):
+
+'''
+불법약품의 상세정보를 출력하기위해서 wiki의 정보를 출력.
+불법약품의 XML정보를 찾은 후. 상세정보를 출력.
+'''
+def openwiki(rb):       # 불법약품의 버튼함수.
     if app.getRadioButton("drug")=="부작용보고 약물검색":
         if app.getEntry("searching_option_item")=='':
             app.errorBox("경고", "검색창에 약물 이름을 입력해주세요.")
@@ -149,7 +154,8 @@ def openwiki(rb):
             webbrowser.open(wiki_url,new=new)
     else:
         app.errorBox("경고","부작용이 보고된 약물만 검색해주세요.")
-def imagedownload(rb):
+
+def imagedownload(rb):      # 의약품 이미지를 다운받기 위한 버튼함수.
     if app.getEntry("searching_option_item")=='':
         app.errorBox("경고", "검색창에 약물을 입력해주세요.")
     else:
@@ -224,14 +230,21 @@ def sendemailbutton(rb):
             s.login("drugdbkpu@gmail.com","20152100511!")
             s.sendmail(senderAddr , [recipientAddr], msg.as_string())
             app.infoBox("전송","전송되었습니다.")
-app.addEntry("searching_option_item",0,0)
-app.addButton("검색",searching,0,1)
+
+app.addEntry("searching_option_item",0,0) # 검색창
+app.addButton("검색",searching,0,1)       # 검색 버튼
 app.setEntryDefault("searching_option_item", "　")
+
 app.addLabel("f2", "검색할 환경을 선택하십시오.",2,0)
 app.addButton("설정", setting,2,1)
+
 app.addRadioButton("drug","약품 이름검색",3)
 app.addRadioButton("drug","건강 식품검색",4) 
 app.addRadioButton("drug","부작용보고 약물검색",5)
+
+'''
+의약품 검색결과출력
+'''
 app.addLabel("등록번호-1", None,8,0)
 app.addLabel("등록번호-2", None,8,1)
 app.addLabel("이름-1", None,9,0)
