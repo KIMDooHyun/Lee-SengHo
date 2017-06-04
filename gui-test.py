@@ -224,7 +224,6 @@ def sendemailbutton(rb):
             s.login("drugdbkpu@gmail.com","20152100511!")
             s.sendmail(senderAddr , [recipientAddr], msg.as_string())
             app.infoBox("전송","전송되었습니다.")
-#이후 구현할 기능 : 검색 후 바로 메일 전송
 app.addEntry("searching_option_item",0,0)
 app.addButton("검색",searching,0,1)
 app.setEntryDefault("searching_option_item", "　")
