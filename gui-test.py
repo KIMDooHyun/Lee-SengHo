@@ -175,61 +175,70 @@ def sendemailbutton(rb):
         else:
             senderAddr = "drugdbkpu@gmail.com"
             recipientAddr=app.textBox("email 주소 입력", "이메일 주소를 입력해주세요.")
-            host = "smtp.gmail.com"
-            port = "587"
-            text = "약물 등록번호 : %s \n약물명 : %s \n제조사 : %s \n용도 : %s \n이미지 링크 : %s" %(ITEM_SEQ, ITEM_NAME, ENTP_NAME, CLASS_NAME, ImageUrl)
-            msg = MIMEText(text)
-            msg['To'] = senderAddr
-            msg['From'] = recipientAddr
-            msg['Subject'] = '약물 정보 공개'
-            s = mysmtplib.MySMTP(host,port)
-            s.ehlo()
-            s.starttls()
-            s.ehlo()
-            s.login("drugdbkpu@gmail.com","20152100511!")
-            s.sendmail(senderAddr , [recipientAddr], msg.as_string())
-            app.infoBox("전송","전송되었습니다.")
-            s.close()
+            if recipientAddr==None:
+                app.infoBox("취소", "전송이 취소되었습니다.")
+            else:
+                host = "smtp.gmail.com"
+                port = "587"
+                text = "약물 등록번호 : %s \n약물명 : %s \n제조사 : %s \n용도 : %s \n이미지 링크 : %s" %(ITEM_SEQ, ITEM_NAME, ENTP_NAME, CLASS_NAME, ImageUrl)
+                msg = MIMEText(text)
+                msg['To'] = senderAddr
+                msg['From'] = recipientAddr
+                msg['Subject'] = '약물 정보 공개'
+                s = mysmtplib.MySMTP(host,port)
+                s.ehlo()
+                s.starttls()
+                s.ehlo()
+                s.login("drugdbkpu@gmail.com","20152100511!")
+                s.sendmail(senderAddr , [recipientAddr], msg.as_string())
+                app.infoBox("전송","전송되었습니다.")
+                s.close()
     if app.getRadioButton("drug")=='건강 식품검색':
         if app.getLabel("이름-1")=='':
             app.errorBox("경고","먼저 검색을 하셔야합니다.")
         else:
             senderAddr = "drugdbkpu@gmail.com"
             recipientAddr=app.textBox("email 주소 입력", "이메일 주소를 입력해주세요.")
-            host = "smtp.gmail.com"
-            port = "587"
-            text = "식품 등록번호 : %s \n식품명 : %s \n제조사 : %s \n복용 방법 : %s" %(PRMS_DT, PRDLST_NM, BSSH_NM, NTK_MTHD)
-            msg = MIMEText(text)
-            msg['To'] = senderAddr
-            msg['From'] = recipientAddr
-            msg['Subject'] = '건강보조식품 정보 공개'
-            s = mysmtplib.MySMTP(host,port)
-            s.ehlo()
-            s.starttls()
-            s.ehlo()
-            s.login("drugdbkpu@gmail.com","20152100511!")
-            s.sendmail(senderAddr , [recipientAddr], msg.as_string())
-            app.infoBox("전송","전송되었습니다.")
+            if recipientAddr==None:
+                app.infoBox("취소", "전송이 취소되었습니다.")
+            else:
+                host = "smtp.gmail.com"
+                port = "587"
+                text = "식품 등록번호 : %s \n식품명 : %s \n제조사 : %s \n복용 방법 : %s" %(PRMS_DT, PRDLST_NM, BSSH_NM, NTK_MTHD)
+                msg = MIMEText(text)
+                msg['To'] = senderAddr
+                msg['From'] = recipientAddr
+                msg['Subject'] = '건강보조식품 정보 공개'
+                s = mysmtplib.MySMTP(host,port)
+                s.ehlo()
+                s.starttls()
+                s.ehlo()
+                s.login("drugdbkpu@gmail.com","20152100511!")
+                s.sendmail(senderAddr , [recipientAddr], msg.as_string())
+                app.infoBox("전송","전송되었습니다.")
     if app.getRadioButton("drug")=='부작용보고 약물검색':
         if app.getLabel("이름-1")=='':
             app.errorBox("경고","먼저 검색을 하셔야합니다.")
         else:
             senderAddr = "drugdbkpu@gmail.com"
             recipientAddr=app.textBox("email 주소 입력", "이메일 주소를 입력해주세요.")
-            host = "smtp.gmail.com"
-            port = "587"
-            text = "약물명 : %s \n약물 허용 기간 : %s \n증상 : %s" %(ITEM_NAME, period_NAME, inflist)
-            msg = MIMEText(text)
-            msg['To'] = senderAddr
-            msg['From'] = recipientAddr
-            msg['Subject'] = '부작용 약물 정보 공개'
-            s = mysmtplib.MySMTP(host,port)
-            s.ehlo()
-            s.starttls()
-            s.ehlo()
-            s.login("drugdbkpu@gmail.com","20152100511!")
-            s.sendmail(senderAddr , [recipientAddr], msg.as_string())
-            app.infoBox("전송","전송되었습니다.")
+            if recipientAddr==None:
+                app.infoBox("취소", "전송이 취소되었습니다.")
+            else:
+                host = "smtp.gmail.com"
+                port = "587"
+                text = "약물명 : %s \n약물 허용 기간 : %s \n증상 : %s" %(ITEM_NAME, period_NAME, inflist)
+                msg = MIMEText(text)
+                msg['To'] = senderAddr
+                msg['From'] = recipientAddr
+                msg['Subject'] = '부작용 약물 정보 공개'
+                s = mysmtplib.MySMTP(host,port)
+                s.ehlo()
+                s.starttls()
+                s.ehlo()
+                s.login("drugdbkpu@gmail.com","20152100511!")
+                s.sendmail(senderAddr , [recipientAddr], msg.as_string())
+                app.infoBox("전송","전송되었습니다.")
 
 app.addEntry("searching_option_item",0,0) # 검색창
 app.addButton("검색",searching,0,1)       # 검색 버튼
