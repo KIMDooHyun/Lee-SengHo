@@ -155,14 +155,16 @@ def searching(rb):                                          # 검색 버튼 함�
 불법약품의 상세정보를 출력하기위해서 wiki의 정보를 출력.
 불법약품의 XML정보를 찾은 후. 상세정보를 출력.
 '''
-def openwiki(rb):       # 불법약품의 버튼함수.
+def openwiki(rb): #위키피디아의 한영전환 후 약물을 검색합니다
     if app.getRadioButton("drug")=="부작용보고 약물검색":
         if app.getEntry("searching_option_item")=='':
             app.errorBox("경고", "검색창에 약물 이름을 입력해주세요.")
         else:
-            illicit_drugs=app.getEntry("searching_option_item")
-            itemname_encText = quote(illicit_drugs)
-            wiki_url = 'https://ko.wikipedia.org/wiki/' + itemname_encText
+            searching(rb)
+            if app.getRadioButton("위키한영전환")=="한글위키":
+                wiki_url = 'https://ko.wikipedia.org/wiki/' + ITEM_NAME
+            elif app.getRadioButton("위키한영전환")=="영문위키":
+                wiki_url = 'https://en.wikipedia.org/wiki/' + ITEM_NAME_ENG
             new = 2 # open in a new tab, if possible
             webbrowser.open(wiki_url,new=new)
     else:
