@@ -9,7 +9,7 @@ import mysmtplib
 from appJar import gui
 
 app=gui()
-app.setGeometry("580x260")                                  # 프로그램 크기 설정
+app.setGeometry("960x480")                                  # 프로그램 크기 설정
 
 def setting(rb):                                            # 설정버튼 함수
     if app.getRadioButton("drug")=='약품 이름검색':
