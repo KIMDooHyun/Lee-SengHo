@@ -266,9 +266,9 @@ def sendemailbutton(rb):                        # 검색한 정보를 메일로 
                 s.login("gift8290@gmail.com","azxs2314")
                 s.sendmail(senderAddr , [recipientAddr], msg.as_string())
                 app.infoBox("전송","전송되었습니다.")
-
-app.addEntry("searching_option_item",0,0) # 검색창
-app.addButton("검색",searching,0,1)       # 검색 버튼
+app.addLabel("제목","의약품 & 보조식품 조회 App",0,0)
+app.addEntry("searching_option_item",1,0) # 검색창
+app.addButton("검색",searching,1,1)       # 검색 버튼
 app.setEntryDefault("searching_option_item", "　")
 
 app.addLabel("f2", "검색할 환경을 선택하십시오.",2,0)
