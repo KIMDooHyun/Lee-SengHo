@@ -169,7 +169,6 @@ def openwiki(rb): #위키피디아의 한영전환 후 약물을 검색합니다
             webbrowser.open(wiki_url,new=new)
     else:
         app.errorBox("경고","부작용이 보고된 약물만 검색해주세요.")
-
 def imagedownload(rb):      # 의약품 이미지를 다운받기 위한 버튼함수.
     if app.getEntry("searching_option_item")=='':
         app.errorBox("경고", "검색창에 약물을 입력해주세요.")
