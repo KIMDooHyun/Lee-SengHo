@@ -161,7 +161,7 @@ def openwiki(rb): #위키피디아의 한영전환 후 약물을 검색합니다
             app.errorBox("경고", "검색창에 약물 이름을 입력해주세요.")
         else:
             searching(rb)
-            if app.getRadioButton("위키 한영전환")=="한글위키":
+            if app.getRadioButton("위키한영전환")=="한글위키":
                 wiki_url = 'https://ko.wikipedia.org/wiki/' + ITEM_NAME
             elif app.getRadioButton("위키한영전환")=="영문위키":
                 wiki_url = 'https://en.wikipedia.org/wiki/' + ITEM_NAME_ENG
